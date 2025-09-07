@@ -1,12 +1,39 @@
 {
   "name": "ruthful-merch-store-backend",
-  "module": "index.ts",
+  "module": "./src/app.ts",
   "type": "module",
   "private": true,
+  "scripts": {
+    "dev": "bun run --hot src/app.ts",
+    "lint": "eslint . --ext .ts",
+    "lint:fix": "eslint . --ext .ts --fix",
+    "format": "prettier --write .",
+    "db:generate": "bunx drizzle-kit generate",
+    "db:migrate": "bunx drizzle-kit migrate"
+  },
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "@types/node": "^24.3.1",
+    "@types/pg": "^8.15.5",
+    "@typescript-eslint/eslint-plugin": "^8.42.0",
+    "@typescript-eslint/parser": "^8.42.0",
+    "drizzle-kit": "^0.31.4",
+    "eslint": "^9.35.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
+    "prettier": "^3.6.2"
   },
   "peerDependencies": {
     "typescript": "^5"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.2",
+    "dotenv-expand": "^12.0.3",
+    "drizzle-orm": "^0.44.5",
+    "drizzle-zod": "^0.8.3",
+    "hono": "^4.9.6",
+    "nanoid": "^5.1.5",
+    "pg": "^8.16.3",
+    "zod": "^4.1.5"
   }
 }
