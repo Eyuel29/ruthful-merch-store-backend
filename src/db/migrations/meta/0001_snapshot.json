@@ -1,6 +1,6 @@
 {
-  "id": "6c09a7f7-dc82-4ad1-a382-9a5ee2839de9",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "a16dfff6-08bc-4d4d-933e-a43fcfb3e3d2",
+  "prevId": "6c09a7f7-dc82-4ad1-a382-9a5ee2839de9",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -235,7 +235,8 @@
           "type": "role[]",
           "typeSchema": "public",
           "primaryKey": false,
-          "notNull": false
+          "notNull": false,
+          "default": "'{\"customer\"}'"
         },
         "email_verified": {
           "name": "email_verified",

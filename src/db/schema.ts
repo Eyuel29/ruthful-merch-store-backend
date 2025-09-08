@@ -1,13 +1,13 @@
 import { pgTable, text, integer, timestamp, uniqueIndex, pgEnum } from "drizzle-orm/pg-core";
 import { nanoid } from "nanoid";
 
-const roleEnum = pgEnum("role", ["customer", "admin", "manager"]);
+export const role = pgEnum("role", ["customer", "admin", "manager"]);
 
 export const user = pgTable("user", {
   id: text("user_id").primaryKey().$default(nanoid),
   email: text("email").notNull().unique(),
   name: text("name"),
-  roles: roleEnum().array(),
+  roles: role().array().default(["customer"]),
   emailVerified: integer("email_verified").notNull().default(0),
   image: text("image"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
