@@ -1,13 +1,27 @@
-import { createSelectSchema, createInsertSchema } from "drizzle-zod";
-import z from "zod";
-import { user, session, account, verification } from "./schema";
+import { createSelectSchema, createInsertSchema } from 'drizzle-zod';
+import z from 'zod';
+import { user, session, account, verification } from './schema';
+
+export const paginationSchema = z.object({
+  page: z.coerce.number().int().positive().default(1),
+});
+
+export const idParamsSchema = z.object({
+  id: z.string(),
+});
 
 export const selectUserSchema = createSelectSchema(user);
 
-export const insertUserSchema = createInsertSchema(user, {
-  roles: z.string(),
-}).omit({
+export const paginatedUserSchema = z.object({
+  totalUsers: z.number().int().positive(),
+  currentPage: z.number().int().positive(),
+  totalPages: z.number().int().positive(),
+  users: z.array(selectUserSchema),
+});
+
+export const insertUserSchema = createInsertSchema(user).omit({
   id: true,
+  roles: true,
   createdAt: true,
   updatedAt: true,
   emailVerified: true,
@@ -49,30 +63,30 @@ export const signUpSchema = z.object({
   name: z
     .string()
     .regex(/^[A-Za-z\s]*$/, {
-      message: "Name should only contain letters and spaces.",
+      message: 'Name should only contain letters and spaces.',
     })
-    .min(3, { message: "Name must be at least 3 characters long." })
-    .max(50, { message: "Name must not exceed 50 characters." }),
-  email: z.string().email({ message: "Please provide a valid email address." }),
+    .min(3, { message: 'Name must be at least 3 characters long.' })
+    .max(50, { message: 'Name must not exceed 50 characters.' }),
+  email: z.string().email({ message: 'Please provide a valid email address.' }),
   password: z
     .string()
-    .min(8, { message: "Password must be at least 8 characters long." })
+    .min(8, { message: 'Password must be at least 8 characters long.' })
     .regex(/[A-Z]/, {
-      message: "Password must contain at least one uppercase letter.",
+      message: 'Password must contain at least one uppercase letter.',
     })
     .regex(/[a-z]/, {
-      message: "Password must contain at least one lowercase letter.",
+      message: 'Password must contain at least one lowercase letter.',
     })
-    .regex(/[0-9]/, { message: "Password must contain at least one number." })
+    .regex(/[0-9]/, { message: 'Password must contain at least one number.' })
     .regex(/[^A-Za-z0-9]/, {
-      message: "Password must contain at least one special character.",
+      message: 'Password must contain at least one special character.',
     }),
-  image: z.string().url({ message: "Please provide a valid URL for the image." }).optional(),
+  image: z.string().url({ message: 'Please provide a valid URL for the image.' }).optional(),
 });
 
 export const signInSchema = z.object({
-  email: z.email({ message: "Please provide a valid email address." }),
-  password: z.string().min(8, { message: "Password must be at least 8 characters long." }),
+  email: z.email({ message: 'Please provide a valid email address.' }),
+  password: z.string().min(8, { message: 'Password must be at least 8 characters long.' }),
 });
 
 export const errorSchema = z.object({
@@ -82,22 +96,18 @@ export const errorSchema = z.object({
 export const photoUploadSchema = z.object({
   files: z
     .array(z.instanceof(File))
-    .min(1, { message: "At least one file is required." })
-    .max(10, { message: "You can upload a maximum of 10 files." })
+    .min(1, { message: 'At least one file is required.' })
+    .max(10, { message: 'You can upload a maximum of 10 files.' })
     .refine(
       (files) =>
         files.every((file) => {
-          const validTypes = ["image/jpeg", "image/png", "image/webp"];
+          const validTypes = ['image/jpeg', 'image/png', 'image/webp'];
           return validTypes.includes(file.type);
         }),
-      "Only .jpg, .png and .webp files are allowed.",
+      'Only .jpg, .png and .webp files are allowed.',
     )
     .refine(
       (files) => files.every((file) => file.size <= 5 * 1024 * 1024),
-      "Each file must be less than 5MB.",
+      'Each file must be less than 5MB.',
     ),
-});
-
-export const idParamsSchema = z.object({
-  id: z.string(),
 });
