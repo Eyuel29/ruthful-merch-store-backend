@@ -7,11 +7,12 @@ import { defaultHook } from 'stoker/openapi';
 
 import { connect } from '@/db/index';
 import env from '@/env';
+import auth from '@/lib/auth';
+import errorHandler from '@/middlewares/error-handler';
 import { verifyOrigin } from '@/middlewares/verify-origin';
+import userRouter from '@/routes/user/user.index';
 
 import packageJSON from '../package.json' with { type: 'json' };
-import errorHandler from './middlewares/error-handler';
-import userRouter from './routes/user/user.index';
 
 const scalarProxyUrl = env.ENVIRONMENT === 'development' ? 'https://proxy.scalar.com' : undefined;
 
@@ -29,7 +30,7 @@ app.use(errorHandler);
 app.route('/api/users', userRouter);
 
 app.doc('/api/doc', {
-  openapi: '',
+  openapi: '3.1.0',
   info: {
     version: packageJSON.version,
     title: 'Ruthful Hearts API',
@@ -50,6 +51,10 @@ app.get(
   }),
 );
 
+app.on(['POST', 'GET'], '/api/auth/**', (c) => {
+  return auth.handler(c.req.raw);
+});
+
 (async () => {
   if (env.ENVIRONMENT !== 'test') {
     try {
@@ -59,6 +64,7 @@ app.get(
         hostname: '0.0.0.0',
         port: env.PORT,
       });
+
       console.log(`Server running on ${server.url}`);
     }
     catch (err) {

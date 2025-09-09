@@ -76,20 +76,13 @@ export const get: RouteHandler<GetUserRoute> = async (c) => {
 };
 
 export const remove: RouteHandler<RemoveUserRoute> = async (c) => {
-  try {
-    const { id } = c.req.valid('param');
+  const { id } = c.req.valid('param');
 
-    const result = await db.delete(user).where(eq(user.id, String(id)));
+  const result = await db.delete(user).where(eq(user.id, String(id)));
 
-    if (result.rowCount === 0) {
-      return c.json({ message: 'User not found.' }, HttpStatusCodes.NOT_FOUND);
-    }
-
-    return c.body(null, HttpStatusCodes.NO_CONTENT);
-  } catch {
-    return c.json(
-      { message: 'Could not delete user. Please try again later.' },
-      HttpStatusCodes.INTERNAL_SERVER_ERROR,
-    );
+  if (result.rowCount === 0) {
+    return c.json({ message: 'User not found.' }, HttpStatusCodes.NOT_FOUND);
   }
+
+  return c.body(null, HttpStatusCodes.NO_CONTENT);
 };

@@ -21,6 +21,14 @@ const envSchema = z
     ALLOWED_ORIGINS: z.string(),
     DATABASE_AUTH_TOKEN: z.string().optional(),
     DATABASE_URL: z.url(),
+    EMAIL_ADDRESS: z.email(),
+    SENDER_ADDRESS: z.email(),
+    EMAIL_PASS: z.string(),
+    GOOGLE_OAUTH_CLIENT_ID: z.string(),
+    GOOGLE_OAUTH_CLIENT_SECRET: z.string(),
+    BETTER_AUTH_SECRET: z.string(),
+    TOKEN_LIFETIME: z.coerce.number(),
+    SESSION_LIFETIME: z.coerce.number(),
   })
   .superRefine((input, ctx) => {
     if (input.ENVIRONMENT === 'production' && !input.DATABASE_AUTH_TOKEN) {

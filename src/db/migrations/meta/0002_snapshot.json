@@ -1,6 +1,6 @@
 {
-  "id": "cdbe5717-66ba-45ca-8741-c75ebaceaec5",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "f7dd40d5-a255-4b22-ae9f-ad6329478426",
+  "prevId": "a16dfff6-08bc-4d4d-933e-a43fcfb3e3d2",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -252,7 +252,7 @@
           "name": "email_verified",
           "type": "boolean",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "default": false
         },
         "image": {

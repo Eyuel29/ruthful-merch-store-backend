@@ -1,6 +1,6 @@
 {
-  "id": "a16dfff6-08bc-4d4d-933e-a43fcfb3e3d2",
-  "prevId": "6c09a7f7-dc82-4ad1-a382-9a5ee2839de9",
+  "id": "7a85dbb1-2095-4cea-a55d-01e339433e1b",
+  "prevId": "f7dd40d5-a255-4b22-ae9f-ad6329478426",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -117,8 +117,12 @@
           "name": "account_user_id_user_user_id_fk",
           "tableFrom": "account",
           "tableTo": "user",
-          "columnsFrom": ["user_id"],
-          "columnsTo": ["user_id"],
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "user_id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "cascade"
         }
@@ -190,8 +194,12 @@
           "name": "session_user_id_user_user_id_fk",
           "tableFrom": "session",
           "tableTo": "user",
-          "columnsFrom": ["user_id"],
-          "columnsTo": ["user_id"],
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "user_id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "cascade"
         }
@@ -201,7 +209,9 @@
         "session_token_unique": {
           "name": "session_token_unique",
           "nullsNotDistinct": false,
-          "columns": ["token"]
+          "columns": [
+            "token"
+          ]
         }
       },
       "policies": {},
@@ -240,10 +250,10 @@
         },
         "email_verified": {
           "name": "email_verified",
-          "type": "integer",
+          "type": "boolean",
           "primaryKey": false,
-          "notNull": true,
-          "default": 0
+          "notNull": false,
+          "default": false
         },
         "image": {
           "name": "image",
@@ -273,7 +283,9 @@
         "user_email_unique": {
           "name": "user_email_unique",
           "nullsNotDistinct": false,
-          "columns": ["email"]
+          "columns": [
+            "email"
+          ]
         }
       },
       "policies": {},
@@ -330,7 +342,9 @@
         "verification_value_unique": {
           "name": "verification_value_unique",
           "nullsNotDistinct": false,
-          "columns": ["value"]
+          "columns": [
+            "value"
+          ]
         }
       },
       "policies": {},
@@ -342,7 +356,11 @@
     "public.role": {
       "name": "role",
       "schema": "public",
-      "values": ["customer", "admin", "manager"]
+      "values": [
+        "customer",
+        "admin",
+        "manager"
+      ]
     }
   },
   "schemas": {},

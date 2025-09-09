@@ -1,1 +1,0 @@
-ALTER TABLE "user" ALTER COLUMN "roles" SET DEFAULT '{"customer"}';
