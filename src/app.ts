@@ -1,15 +1,17 @@
 /* eslint-disable no-console */
-import env from '@/env';
-import { connect } from '@/db/index';
 import { OpenAPIHono } from '@hono/zod-openapi';
-import { notFound, onError, serveEmojiFavicon } from 'stoker/middlewares';
-import { defaultHook } from 'stoker/openapi';
-import { verifyOrigin } from '@/middlewares/verify-origin';
-import { logger } from 'hono/logger';
-import userRouter from './routes/user/user.index';
-
 import { Scalar } from '@scalar/hono-api-reference';
+import { logger } from 'hono/logger';
+import { notFound, serveEmojiFavicon } from 'stoker/middlewares';
+import { defaultHook } from 'stoker/openapi';
+
+import { connect } from '@/db/index';
+import env from '@/env';
+import { verifyOrigin } from '@/middlewares/verify-origin';
+
 import packageJSON from '../package.json' with { type: 'json' };
+import errorHandler from './middlewares/error-handler';
+import userRouter from './routes/user/user.index';
 
 const scalarProxyUrl = env.ENVIRONMENT === 'development' ? 'https://proxy.scalar.com' : undefined;
 
@@ -22,7 +24,7 @@ app.use(verifyOrigin);
 app.use(serveEmojiFavicon('❤️'));
 app.use(logger());
 app.notFound(notFound);
-app.onError(onError);
+app.use(errorHandler);
 
 app.route('/api/users', userRouter);
 
@@ -58,7 +60,8 @@ app.get(
         port: env.PORT,
       });
       console.log(`Server running on ${server.url}`);
-    } catch (err) {
+    }
+    catch (err) {
       console.error('Failed to start server:', err);
       process.exit(1);
     }

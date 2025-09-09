@@ -1,4 +1,4 @@
-import { pgTable, text, integer, timestamp, uniqueIndex, pgEnum } from 'drizzle-orm/pg-core';
+import { integer, pgEnum, pgTable, text, timestamp, uniqueIndex } from 'drizzle-orm/pg-core';
 import { nanoid } from 'nanoid';
 
 export const role = pgEnum('role', ['customer', 'admin', 'manager']);
@@ -46,7 +46,7 @@ export const account = pgTable(
     createdAt: timestamp('created_at').defaultNow().notNull(),
     updatedAt: timestamp('updated_at').defaultNow().notNull(),
   },
-  (table) => [uniqueIndex('account_id_unq').on(table.providerId, table.accountId)],
+  table => [uniqueIndex('account_id_unq').on(table.providerId, table.accountId)],
 );
 
 export const verification = pgTable('verification', {

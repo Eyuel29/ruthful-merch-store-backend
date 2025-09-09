@@ -1,6 +1,7 @@
-import { errorSchema } from '@/db/validation';
-import { jsonContent } from 'stoker/openapi/helpers';
 import * as HttpStatusCodes from 'stoker/http-status-codes';
+import { jsonContent } from 'stoker/openapi/helpers';
+
+import { errorSchema } from '@/db/validation';
 
 export const commonResponses = {
   [HttpStatusCodes.BAD_REQUEST]: jsonContent(

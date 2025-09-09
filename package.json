@@ -1,10 +1,10 @@
 {
   "name": "ruthful-merch-store-backend",
+  "type": "module",
   "version": "1.0.0",
+  "private": true,
   "license": "MIT",
   "module": "./src/app.ts",
-  "type": "module",
-  "private": true,
   "scripts": {
     "dev": "bun run --hot src/app.ts",
     "lint": "eslint . --ext .ts",
@@ -13,17 +13,6 @@
     "db:migrate": "bunx drizzle-kit migrate",
     "test": "cross-env ENVIRONMENT=test vitest",
     "build": "tsc && tsc-alias"
-  },
-  "devDependencies": {
-    "@antfu/eslint-config": "^5.3.0",
-    "@types/bun": "latest",
-    "@types/node": "^24.3.1",
-    "@types/pg": "^8.15.5",
-    "drizzle-kit": "^0.31.4",
-    "eslint": "^9.35.0",
-    "tsc-alias": "^1.8.16",
-    "tsx": "^4.20.5",
-    "vitest": "^3.2.4"
   },
   "peerDependencies": {
     "typescript": "^5.9.2"
@@ -40,5 +29,16 @@
     "pg": "^8.16.3",
     "stoker": "^2.0.1",
     "zod": "^4.1.5"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^5.3.0",
+    "@types/bun": "latest",
+    "@types/node": "^24.3.1",
+    "@types/pg": "^8.15.5",
+    "drizzle-kit": "^0.31.4",
+    "eslint": "^9.35.0",
+    "tsc-alias": "^1.8.16",
+    "tsx": "^4.20.5",
+    "vitest": "^3.2.4"
   }
 }

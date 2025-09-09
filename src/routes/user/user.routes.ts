@@ -1,8 +1,8 @@
-import { createRoute, z } from '@hono/zod-openapi';
+import { createRoute } from '@hono/zod-openapi';
 import * as HttpStatusCodes from 'stoker/http-status-codes';
 import { jsonContent, jsonContentRequired } from 'stoker/openapi/helpers';
 import { createErrorSchema } from 'stoker/openapi/schemas';
-import { commonResponses } from '@/lib/constants';
+
 import {
   errorSchema,
   idParamsSchema,
@@ -11,6 +11,7 @@ import {
   patchUserSchema,
   selectUserSchema,
 } from '@/db/validation';
+import { commonResponses } from '@/lib/constants';
 
 const tags = ['Users'];
 

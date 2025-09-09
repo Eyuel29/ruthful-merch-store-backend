@@ -1,6 +1,7 @@
-import { createSelectSchema, createInsertSchema } from 'drizzle-zod';
+import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import z from 'zod';
-import { user, session, account, verification } from './schema';
+
+import { account, session, user, verification } from './schema';
 
 export const paginationSchema = z.object({
   page: z.coerce.number().int().positive().default(1),
@@ -62,7 +63,7 @@ export const patchVerificationSchema = insertVerificationSchema.partial();
 export const signUpSchema = z.object({
   name: z
     .string()
-    .regex(/^[A-Za-z\s]*$/, {
+    .regex(/^[A-Z\s]*$/i, {
       message: 'Name should only contain letters and spaces.',
     })
     .min(3, { message: 'Name must be at least 3 characters long.' })
@@ -77,8 +78,8 @@ export const signUpSchema = z.object({
     .regex(/[a-z]/, {
       message: 'Password must contain at least one lowercase letter.',
     })
-    .regex(/[0-9]/, { message: 'Password must contain at least one number.' })
-    .regex(/[^A-Za-z0-9]/, {
+    .regex(/\d/, { message: 'Password must contain at least one number.' })
+    .regex(/[^A-Z0-9]/i, {
       message: 'Password must contain at least one special character.',
     }),
   image: z.string().url({ message: 'Please provide a valid URL for the image.' }).optional(),
@@ -99,7 +100,7 @@ export const photoUploadSchema = z.object({
     .min(1, { message: 'At least one file is required.' })
     .max(10, { message: 'You can upload a maximum of 10 files.' })
     .refine(
-      (files) =>
+      files =>
         files.every((file) => {
           const validTypes = ['image/jpeg', 'image/png', 'image/webp'];
           return validTypes.includes(file.type);
@@ -107,7 +108,7 @@ export const photoUploadSchema = z.object({
       'Only .jpg, .png and .webp files are allowed.',
     )
     .refine(
-      (files) => files.every((file) => file.size <= 5 * 1024 * 1024),
+      files => files.every(file => file.size <= 5 * 1024 * 1024),
       'Each file must be less than 5MB.',
     ),
 });

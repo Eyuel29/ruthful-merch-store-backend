@@ -1,7 +1,9 @@
 /* eslint-disable no-console */
-import env from '@/env';
-import { Pool } from 'pg';
 import { drizzle } from 'drizzle-orm/node-postgres';
+import { Pool } from 'pg';
+
+import env from '@/env';
+
 import * as schema from './schema';
 
 const pool = new Pool({
@@ -10,12 +12,13 @@ const pool = new Pool({
 
 export const db = drizzle(pool, { casing: 'snake_case', schema });
 
-export const connect = async () => {
+export async function connect() {
   try {
     await pool.query('SELECT 1');
     console.log('Connected to Postgres DB');
-  } catch (err) {
+  }
+  catch (err) {
     console.error('Database connection failed:', err);
     process.exit(1);
   }
-};
+}
