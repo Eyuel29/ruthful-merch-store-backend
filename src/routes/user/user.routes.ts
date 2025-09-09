@@ -12,6 +12,7 @@ import {
   selectUserSchema,
 } from '@/db/validation';
 import { commonResponses } from '@/lib/constants';
+import verifyAuth from '@/middlewares/verify-auth';
 
 const tags = ['Users'];
 
@@ -23,6 +24,7 @@ export const patch = createRoute({
     body: jsonContentRequired(patchUserSchema, 'The fields to update for the specified user.'),
   },
   tags,
+  middleware: [verifyAuth()],
   responses: {
     [HttpStatusCodes.OK]: jsonContent(
       selectUserSchema,
@@ -41,6 +43,7 @@ export const remove = createRoute({
   method: 'delete',
   request: { params: idParamsSchema },
   tags,
+  middleware: [verifyAuth(['admin'])],
   responses: {
     [HttpStatusCodes.NO_CONTENT]: {
       description: 'The user was successfully deleted. No response body is returned.',
@@ -60,8 +63,9 @@ export const remove = createRoute({
 export const list = createRoute({
   path: '/',
   method: 'get',
-  tags,
   request: { query: paginationSchema },
+  middleware: [verifyAuth(['admin'])],
+  tags,
   responses: {
     [HttpStatusCodes.OK]: jsonContent(
       paginatedUserSchema,
@@ -78,8 +82,9 @@ export const list = createRoute({
 export const get = createRoute({
   path: '/{id}',
   method: 'get',
-  tags,
   request: { params: idParamsSchema },
+  middleware: [verifyAuth(['admin', 'manager'])],
+  tags,
   responses: {
     [HttpStatusCodes.OK]: jsonContent(selectUserSchema, 'The user object.'),
     ...commonResponses,

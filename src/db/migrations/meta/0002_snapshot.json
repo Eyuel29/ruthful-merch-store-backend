@@ -1,6 +1,6 @@
 {
-  "id": "f7dd40d5-a255-4b22-ae9f-ad6329478426",
-  "prevId": "a16dfff6-08bc-4d4d-933e-a43fcfb3e3d2",
+  "id": "4ac34904-f9dc-4ff0-b9da-7aadfc48ca80",
+  "prevId": "f7dd40d5-a255-4b22-ae9f-ad6329478426",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -245,14 +245,14 @@
           "type": "role[]",
           "typeSchema": "public",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "default": "'{\"customer\"}'"
         },
         "email_verified": {
           "name": "email_verified",
           "type": "boolean",
           "primaryKey": false,
-          "notNull": true,
+          "notNull": false,
           "default": false
         },
         "image": {

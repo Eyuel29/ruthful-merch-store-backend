@@ -7,7 +7,7 @@ export const user = pgTable('user', {
   id: text('user_id').primaryKey().$default(nanoid),
   email: text('email').notNull().unique(),
   name: text('name'),
-  roles: role().array().default(['customer']),
+  roles: role().array().notNull().default(['customer']),
   emailVerified: boolean('email_verified').default(false),
   image: text('image'),
   createdAt: timestamp('created_at').defaultNow().notNull(),

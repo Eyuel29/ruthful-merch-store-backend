@@ -156,7 +156,7 @@ export const auth = betterAuth({
     enabled: true,
   },
   advanced: {
-    cookiePrefix: 'rh-',
+    cookiePrefix: 'rh',
   },
 });
 
