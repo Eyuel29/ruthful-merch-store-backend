@@ -6,7 +6,7 @@ import * as HttpStatusCodes from 'stoker/http-status-codes';
 import { db } from '@/db/index';
 import { user } from '@/db/schema';
 
-import type { GetUserRoute, ListUserRoute, PatchUserRoute, RemoveUserRoute } from './user.routes';
+import type { GetUserRoute, ListUserRoute, PatchUserRoute, RemoveUserRoute } from './user.route';
 
 export const list: RouteHandler<ListUserRoute> = async (c) => {
   const { page } = c.req.valid('query');

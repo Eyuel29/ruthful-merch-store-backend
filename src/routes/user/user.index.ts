@@ -1,8 +1,8 @@
 import { OpenAPIHono } from '@hono/zod-openapi';
 import { defaultHook } from 'stoker/openapi';
 
-import * as handlers from './user.handlers';
-import * as routes from './user.routes';
+import * as handlers from './user.handler';
+import * as routes from './user.route';
 
 export const router = new OpenAPIHono({
   strict: false,

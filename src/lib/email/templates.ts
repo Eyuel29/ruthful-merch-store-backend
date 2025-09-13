@@ -16,10 +16,6 @@ const style = `
         height: 100vh;
     }
     
-    p{
-        text-align: justify;
-    }
-
     .email-container {
         background-color: #fff;
         border-radius: 8px;
@@ -61,6 +57,7 @@ const style = `
         font-size: 16px;
         color: #555;
         margin-bottom: 30px;
+        text-align: justify;
     }
 
     .confirm-button {
