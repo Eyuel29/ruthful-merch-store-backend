@@ -11,6 +11,7 @@ import {
   productCategory,
   productCategoryAttribute,
   productImage,
+  productModel,
   review,
   session,
   user,
@@ -54,6 +55,7 @@ export const productRelations = relations(product, ({ many, one }) => ({
     references: [productCategory.id],
   }),
   images: many(productImage),
+  models: many(productModel),
   attributeValues: many(productAttributeValue),
   discounts: many(discount),
   orderItems: many(orderItem),
@@ -74,6 +76,13 @@ export const productAttributeValueRelations = relations(productAttributeValue, (
 export const productImageRelations = relations(productImage, ({ one }) => ({
   product: one(product, {
     fields: [productImage.productId],
+    references: [product.id],
+  }),
+}));
+
+export const productModelRelations = relations(productModel, ({ one }) => ({
+  product: one(product, {
+    fields: [productModel.productId],
     references: [product.id],
   }),
 }));

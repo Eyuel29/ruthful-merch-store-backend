@@ -104,6 +104,18 @@ export const productImage = pgTable('product_image', {
   updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
 });
 
+export const productModel = pgTable('product_model', {
+  id: uuid('id').defaultRandom().primaryKey(),
+  productId: uuid('product_id')
+    .references(() => product.id, { onDelete: 'cascade', onUpdate: 'cascade' })
+    .notNull(),
+  url: text('url').notNull(),
+  thumbnailUrl: text('thumbnail_url'),
+  displayOrder: text('display_order').default('0'),
+  createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+  updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
+});
+
 export const productAttributeValue = pgTable('product_attribute_value', {
   id: uuid('id').defaultRandom().primaryKey(),
   productId: uuid('product_id').references(() => product.id, { onDelete: 'cascade', onUpdate: 'cascade' }).notNull(),
