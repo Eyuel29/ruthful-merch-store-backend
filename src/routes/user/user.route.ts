@@ -95,7 +95,7 @@ export const get = createRoute({
   },
 });
 
-export type ListUserRoute = typeof list;
+export type ListUsersRoute = typeof list;
 export type GetUserRoute = typeof get;
 export type PatchUserRoute = typeof patch;
 export type RemoveUserRoute = typeof remove;

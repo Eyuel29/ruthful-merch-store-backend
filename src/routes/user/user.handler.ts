@@ -6,9 +6,9 @@ import * as HttpStatusCodes from 'stoker/http-status-codes';
 import { db } from '@/db/index';
 import { user } from '@/db/schema';
 
-import type { GetUserRoute, ListUserRoute, PatchUserRoute, RemoveUserRoute } from './user.route';
+import type { GetUserRoute, ListUsersRoute, PatchUserRoute, RemoveUserRoute } from './user.route';
 
-export const list: RouteHandler<ListUserRoute> = async (c) => {
+export const list: RouteHandler<ListUsersRoute> = async (c) => {
   const { page } = c.req.valid('query');
   const limit = 10;
   const offset = (page - 1) * limit;
