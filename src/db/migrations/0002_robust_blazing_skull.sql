@@ -1,1 +1,0 @@
-ALTER TABLE "user" ALTER COLUMN "email_verified" SET DATA TYPE boolean;

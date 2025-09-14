@@ -5,22 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1757430749114,
-      "tag": "0000_perfect_micromax",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1757430875650,
-      "tag": "0001_medical_prodigy",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1757451236992,
-      "tag": "0002_zippy_landau",
+      "when": 1757875121424,
+      "tag": "0000_fearless_marvex",
       "breakpoints": true
     }
   ]
