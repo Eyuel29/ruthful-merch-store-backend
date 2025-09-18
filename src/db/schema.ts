@@ -58,7 +58,8 @@ export const account = pgTable('account', {
 }, schema => [uniqueIndex('account_id_unq').on(schema.providerId, schema.accountId)]);
 
 export const verification = pgTable('verification', {
-  identifier: text('identifier').primaryKey().notNull(),
+  id: uuid('id').defaultRandom().primaryKey(),
+  identifier: text('identifier').notNull(),
   value: text('value').notNull().unique(),
   expiresAt: timestamp('expires_at', { withTimezone: true }).notNull(),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
