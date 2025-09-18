@@ -126,6 +126,11 @@ export const auth = betterAuth({
     expiresIn: env.SESSION_LIFETIME,
     preserveSessionInDatabase: true,
   },
+  verification: {
+    fields: {
+      identifier: 'id',
+    },
+  },
   secret: env.BETTER_AUTH_SECRET,
   emailVerification: {
     sendVerificationEmail: async (data, _) => {
