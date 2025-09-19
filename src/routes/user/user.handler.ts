@@ -14,12 +14,11 @@ export const list: RouteHandler<ListUsersRoute> = async (c) => {
   const offset = (page - 1) * limit;
 
   const [result] = await db.select({ totalCount: count(user.id) }).from(user);
-  const totalCount = result?.totalCount ?? 0;
+  const totalCount = result!.totalCount;
 
   if (totalCount === 0) {
     return c.json(
       {
-        totalUsers: 0,
         currentPage: page,
         totalPages: 0,
         users: [],
@@ -35,7 +34,6 @@ export const list: RouteHandler<ListUsersRoute> = async (c) => {
 
   return c.json(
     {
-      totalUsers: totalCount,
       currentPage: page,
       totalPages: Math.ceil(totalCount / limit),
       users,
@@ -78,11 +76,11 @@ export const get: RouteHandler<GetUserRoute> = async (c) => {
 export const remove: RouteHandler<RemoveUserRoute> = async (c) => {
   const { id } = c.req.valid('param');
 
-  const result = await db.delete(user).where(eq(user.id, String(id)));
+  const [result] = await db.delete(user).where(eq(user.id, String(id))).returning();
 
-  if (result.rowCount === 0) {
+  if (!result) {
     return c.json({ message: 'User not found.' }, HttpStatusCodes.NOT_FOUND);
   }
 
-  return c.body(null, HttpStatusCodes.NO_CONTENT);
+  return c.json(result, HttpStatusCodes.OK);
 };

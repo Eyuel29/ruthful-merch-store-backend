@@ -45,6 +45,7 @@ export const remove = createRoute({
   tags,
   middleware: [verifyAuth(['admin'])],
   responses: {
+    [HttpStatusCodes.OK]: jsonContent(selectUserSchema, 'The user object.'),
     [HttpStatusCodes.NO_CONTENT]: {
       description: 'The user was successfully deleted. No response body is returned.',
     },

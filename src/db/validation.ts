@@ -14,7 +14,6 @@ export const idParamsSchema = z.object({
 export const selectUserSchema = createSelectSchema(user);
 
 export const paginatedUserSchema = z.object({
-  totalUsers: z.number().int().positive(),
   currentPage: z.number().int().positive(),
   totalPages: z.number().int().positive(),
   users: z.array(selectUserSchema),
@@ -100,7 +99,7 @@ export const photoUploadSchema = z.object({
     .min(1, { message: 'At least one file is required.' })
     .max(10, { message: 'You can upload a maximum of 10 files.' })
     .refine(
-      files =>
+      (files) =>
         files.every((file) => {
           const validTypes = ['image/jpeg', 'image/png', 'image/webp'];
           return validTypes.includes(file.type);
@@ -108,7 +107,7 @@ export const photoUploadSchema = z.object({
       'Only .jpg, .png and .webp files are allowed.',
     )
     .refine(
-      files => files.every(file => file.size <= 5 * 1024 * 1024),
+      (files) => files.every((file) => file.size <= 5 * 1024 * 1024),
       'Each file must be less than 5MB.',
     ),
 });

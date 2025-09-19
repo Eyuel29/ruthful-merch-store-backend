@@ -10,7 +10,7 @@ export default antfu(
       semi: true,
       quotes: 'single',
     },
-    ignores: ['**/migrations/*'],
+    ignores: ['**/migrations/*', './node_modules'],
   },
   {
     rules: {
