@@ -16,6 +16,41 @@ import verifyAuth from '@/middlewares/verify-auth';
 
 const tags = ['Users'];
 
+export const list = createRoute({
+  path: '/',
+  method: 'get',
+  request: { query: paginationSchema },
+  middleware: [verifyAuth(['admin'])],
+  tags,
+  responses: {
+    [HttpStatusCodes.OK]: jsonContent(
+      paginatedUserSchema,
+      'Successfully retrieved. Returns a paginated list of user objects.',
+    ),
+    ...commonResponses,
+    [HttpStatusCodes.NOT_FOUND]: jsonContent(
+      errorSchema,
+      'No users found for the given query parameters.',
+    ),
+  },
+});
+
+export const get = createRoute({
+  path: '/{id}',
+  method: 'get',
+  request: { params: idParamsSchema },
+  middleware: [verifyAuth(['admin', 'manager'])],
+  tags,
+  responses: {
+    [HttpStatusCodes.OK]: jsonContent(selectUserSchema, 'The user object.'),
+    ...commonResponses,
+    [HttpStatusCodes.UNPROCESSABLE_ENTITY]: jsonContent(
+      createErrorSchema(idParamsSchema),
+      'The provided user ID is invalid or improperly formatted.',
+    ),
+  },
+});
+
 export const patch = createRoute({
   path: '/{id}',
   method: 'patch',
@@ -54,41 +89,6 @@ export const remove = createRoute({
       errorSchema,
       'The user cannot be deleted due to existing dependencies (e.g., foreign key constraints).',
     ),
-    [HttpStatusCodes.UNPROCESSABLE_ENTITY]: jsonContent(
-      createErrorSchema(idParamsSchema),
-      'The provided user ID is invalid or improperly formatted.',
-    ),
-  },
-});
-
-export const list = createRoute({
-  path: '/',
-  method: 'get',
-  request: { query: paginationSchema },
-  middleware: [verifyAuth(['admin'])],
-  tags,
-  responses: {
-    [HttpStatusCodes.OK]: jsonContent(
-      paginatedUserSchema,
-      'Successfully retrieved. Returns a paginated list of user objects.',
-    ),
-    ...commonResponses,
-    [HttpStatusCodes.NOT_FOUND]: jsonContent(
-      errorSchema,
-      'No users found for the given query parameters.',
-    ),
-  },
-});
-
-export const get = createRoute({
-  path: '/{id}',
-  method: 'get',
-  request: { params: idParamsSchema },
-  middleware: [verifyAuth(['admin', 'manager'])],
-  tags,
-  responses: {
-    [HttpStatusCodes.OK]: jsonContent(selectUserSchema, 'The user object.'),
-    ...commonResponses,
     [HttpStatusCodes.UNPROCESSABLE_ENTITY]: jsonContent(
       createErrorSchema(idParamsSchema),
       'The provided user ID is invalid or improperly formatted.',
