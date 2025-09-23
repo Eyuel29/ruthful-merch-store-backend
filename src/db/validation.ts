@@ -1,7 +1,14 @@
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import z from 'zod';
 
-import { account, productCategory, productCategoryAttribute, session, user, verification } from './schema';
+import {
+  account,
+  productCategory,
+  productCategoryAttribute,
+  session,
+  user,
+  verification,
+} from './schema';
 
 export const paginationSchema = z.object({
   page: z.coerce.number().int().positive().default(1),
@@ -99,7 +106,7 @@ export const photoUploadSchema = z.object({
     .min(1, { message: 'At least one file is required.' })
     .max(10, { message: 'You can upload a maximum of 10 files.' })
     .refine(
-      files =>
+      (files) =>
         files.every((file) => {
           const validTypes = ['image/jpeg', 'image/png', 'image/webp'];
           return validTypes.includes(file.type);
@@ -107,15 +114,13 @@ export const photoUploadSchema = z.object({
       'Only .jpg, .png and .webp files are allowed.',
     )
     .refine(
-      files => files.every(file => file.size <= 5 * 1024 * 1024),
+      (files) => files.every((file) => file.size <= 5 * 1024 * 1024),
       'Each file must be less than 5MB.',
     ),
 });
 
 export const selectProductCategorySchema = createSelectSchema(productCategory).extend({
-  attributes: z.array(
-    createSelectSchema(productCategoryAttribute),
-  ).optional(),
+  attributes: z.array(createSelectSchema(productCategoryAttribute)).optional(),
 });
 
 export const paginatedProductCategorySchema = z.object({
@@ -144,15 +149,25 @@ export const insertProductCategorySchema = baseInsertCategorySchema.extend({
     .string()
     .max(255, { message: 'Description must not exceed 255 characters.' })
     .optional(),
-  logo: z.string().url({ message: 'Logo must be a valid URL.' }).optional(),
-  attributes: z.array(
-    insertAttributeSchema.extend({
-      attributeName: z
-        .string()
-        .min(2, { message: 'Attribute name must be at least 2 characters long.' })
-        .max(50, { message: 'Attribute name must not exceed 50 characters.' }),
-    }),
-  ).min(1, { message: 'At least one attribute is required.' }),
+  logo: z.url({ message: 'Logo must be a valid URL.' }).optional(),
+  attributes: z
+    .array(
+      insertAttributeSchema.extend({
+        attributeName: z
+          .string()
+          .min(2, { message: 'Attribute name must be at least 2 characters long.' })
+          .max(50, { message: 'Attribute name must not exceed 50 characters.' }),
+      }),
+    )
+    .min(1, { message: 'At least one attribute is required.' }),
 });
 
-export const patchProductCategorySchema = insertProductCategorySchema.partial();
+export const patchProductCategorySchema = insertProductCategorySchema.extend({
+  attributes: z.array(
+    z.object({
+      attributeName: z.string().optional(),
+      id: z.string().optional(),
+      productCategoryId: z.string().optional(),
+    }),
+  ),
+});
