@@ -11,6 +11,7 @@ import auth from '@/lib/auth';
 import errorHandler from '@/middlewares/error-handler';
 import { verifyOrigin } from '@/middlewares/verify-origin';
 import categoryRouter from '@/routes/product-category/product-category.index';
+import productRouter from '@/routes/product/product.index';
 import userRouter from '@/routes/user/user.index';
 
 import packageJSON from '../package.json' with { type: 'json' };
@@ -30,6 +31,7 @@ app.use(errorHandler);
 
 app.route('/api/users', userRouter);
 app.route('/api/categories', categoryRouter);
+app.route('/api/products', productRouter);
 
 app.doc('/api/doc', {
   openapi: '3.1.0',

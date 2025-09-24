@@ -6,11 +6,13 @@ import { createErrorSchema } from 'stoker/openapi/schemas';
 import {
   errorSchema,
   idParamsSchema,
-  paginatedUserSchema,
   paginationSchema,
+} from '@/db/validations/app.validation';
+import {
+  paginatedUserSchema,
   patchUserSchema,
   selectUserSchema,
-} from '@/db/validation';
+} from '@/db/validations/auth.validation';
 import { commonResponses } from '@/lib/constants';
 import verifyAuth from '@/middlewares/verify-auth';
 

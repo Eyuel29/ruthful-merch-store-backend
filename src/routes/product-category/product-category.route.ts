@@ -6,12 +6,14 @@ import { createErrorSchema } from 'stoker/openapi/schemas';
 import {
   errorSchema,
   idParamsSchema,
+  paginationSchema,
+} from '@/db/validations/app.validation';
+import {
   insertProductCategorySchema,
   paginatedProductCategorySchema,
-  paginationSchema,
   patchProductCategorySchema,
   selectProductCategorySchema,
-} from '@/db/validation';
+} from '@/db/validations/product-category.validation';
 import { commonResponses } from '@/lib/constants';
 import verifyAuth from '@/middlewares/verify-auth';
 
