@@ -54,12 +54,11 @@ export const insertProductSchema = baseInsertProductSchema.extend({
     .string()
     .regex(/^\d+(\.\d{1,2})?$/, { message: 'Price must be a valid decimal number.' }),
   stock: z.number().int().nonnegative(),
-  isAvailable: z.boolean().optional(),
   images: z
     .array(
       insertProductImageSchema.extend({
-        url: z.string().url(),
-        thumbnailUrl: z.string().url(),
+        url: z.url(),
+        thumbnailUrl: z.url(),
       }),
     )
     .optional(),
@@ -81,6 +80,31 @@ export const insertProductSchema = baseInsertProductSchema.extend({
 
 export const patchProductSchema = insertProductSchema.partial().extend({
   id: z.uuid().optional(),
+  images: z
+    .array(
+      insertProductImageSchema.extend({
+        id: z.uuid().optional(),
+        url: z.url(),
+        thumbnailUrl: z.url(),
+      }),
+    )
+    .optional(),
+  models: z
+    .array(
+      insertProductModelSchema.extend({
+        id: z.uuid().optional(),
+        url: z.url(),
+      }),
+    )
+    .optional(),
+  attributes: z
+    .array(
+      insertProductAttributeValueSchema.extend({
+        id: z.uuid().optional(),
+        value: z.string().min(1, { message: 'Attribute value cannot be empty.' }),
+      }),
+    )
+    .optional(),
 });
 
 export const productFilterSchema = paginationSchema.extend({

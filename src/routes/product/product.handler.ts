@@ -1,4 +1,5 @@
 import type { RouteHandler } from '@hono/zod-openapi';
+import type { InferSelectModel } from 'drizzle-orm';
 
 import { count, eq } from 'drizzle-orm';
 import * as HttpStatusCodes from 'stoker/http-status-codes';
@@ -13,6 +14,13 @@ import type {
   PatchProductRoute,
   RemoveProductRoute,
 } from './product.route';
+
+type ProductImage = InferSelectModel<typeof productImage>;
+type NewProductImage = Omit<ProductImage, 'id'>;
+type ProductModel = InferSelectModel<typeof productModel>;
+type NewProductModel = Omit<ProductModel, 'id'>;
+type ProductAttributeValue = InferSelectModel<typeof productAttributeValue>;
+type NewProductAttributeValue = Omit<ProductAttributeValue, 'id'>;
 
 export const create: RouteHandler<CreateProductRoute> = async (c) => {
   const productInput = c.req.valid('json');
@@ -150,22 +158,89 @@ export const patch: RouteHandler<PatchProductRoute> = async (c) => {
       return null;
 
     if (updates.images) {
-      await tx.delete(productImage).where(eq(productImage.productId, id));
-      await tx
-        .insert(productImage)
-        .values(updates.images.map(img => ({ ...img, productId: id })));
+      const [existingImgs, newImgs] = updates.images.reduce<
+        [ProductImage[], NewProductImage[]]
+      >(
+        ([ex, nw], img) =>
+          img.id ? [[...ex, img as ProductImage], nw] : [ex, [...nw, img as NewProductImage]],
+        [[], []],
+      );
+
+      if (existingImgs.length > 0) {
+        await Promise.all(
+          existingImgs.map(img =>
+            tx
+              .update(productImage)
+              .set({
+                url: img.url,
+                alt: img.alt,
+                thumbnailUrl: img.thumbnailUrl,
+                displayOrder: img.displayOrder,
+              })
+              .where(eq(productImage.id, img.id)),
+          ),
+        );
+      }
+
+      if (newImgs.length > 0) {
+        await tx.insert(productImage).values(newImgs.map(img => ({ ...img, productId: id })));
+      }
     }
 
     if (updates.models) {
-      await tx.delete(productModel).where(eq(productModel.productId, id));
-      await tx.insert(productModel).values(updates.models.map(m => ({ ...m, productId: id })));
+      const [existingModels, newModels] = updates.models.reduce<
+        [ProductModel[], NewProductModel[]]
+      >(
+        ([ex, nw], m) =>
+          m.id ? [[...ex, m as ProductModel], nw] : [ex, [...nw, m as NewProductModel]],
+        [[], []],
+      );
+
+      if (existingModels.length > 0) {
+        await Promise.all(
+          existingModels.map(m =>
+            tx
+              .update(productModel)
+              .set({
+                url: m.url,
+                thumbnailUrl: m.thumbnailUrl,
+                displayOrder: m.displayOrder,
+              })
+              .where(eq(productModel.id, m.id)),
+          ),
+        );
+      }
+
+      if (newModels.length > 0) {
+        await tx.insert(productModel).values(newModels.map(m => ({ ...m, productId: id })));
+      }
     }
 
     if (updates.attributes) {
-      await tx.delete(productAttributeValue).where(eq(productAttributeValue.productId, id));
-      await tx
-        .insert(productAttributeValue)
-        .values(updates.attributes.map(a => ({ ...a, productId: id })));
+      const [existingAttrs, newAttrs] = updates.attributes.reduce<
+        [ProductAttributeValue[], NewProductAttributeValue[]]
+      >(
+        ([ex, nw], a) =>
+          a.id ? [[...ex, a as ProductAttributeValue], nw] : [ex, [...nw, a as NewProductAttributeValue]],
+        [[], []],
+      );
+
+      if (existingAttrs.length > 0) {
+        await Promise.all(
+          existingAttrs.map(a =>
+            tx
+              .update(productAttributeValue)
+              .set({ value: a.value, attributeId: a.attributeId })
+              .where(eq(productAttributeValue.id, a.id)),
+          ),
+        );
+      }
+
+      if (newAttrs.length > 0) {
+        await tx
+          .insert(productAttributeValue)
+          .values(newAttrs.map(a => ({ ...a, productId: id })));
+      }
     }
 
     return tx.query.product.findFirst({
