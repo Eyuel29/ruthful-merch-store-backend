@@ -123,7 +123,11 @@ export function generateEmailTemplate({
             <div class="logo"></div>
             <h1>${title}</h1>
             <p>
-                Dear ${user.name}, ${message} The link is valid for ${tokenLifetime}.
+                Dear ${user.name}, 
+                
+                ${message} 
+                
+                The link is valid for ${tokenLifetime}.
             </p>
             <a class="confirm-button" target="_blank" href="${url}">Confirm</a>
             <p>If you did not request this, you can safely ignore this email.</p>
