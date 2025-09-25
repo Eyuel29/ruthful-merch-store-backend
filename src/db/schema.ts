@@ -61,7 +61,7 @@ export const account = pgTable(
     createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
     updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
   },
-  (schema) => [uniqueIndex('account_id_unq').on(schema.providerId, schema.accountId)],
+  schema => [uniqueIndex('account_id_unq').on(schema.providerId, schema.accountId)],
 );
 
 export const verification = pgTable('verification', {
