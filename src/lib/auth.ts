@@ -6,8 +6,8 @@ import { db } from '@/db/index';
 import * as schema from '@/db/schema';
 import env from '@/env';
 
-import { emailTransporter } from './email/index';
-import { generateEmailTemplate } from './email/templates';
+import { emailTransporter } from './nodemailer/index';
+import { generateEmailTemplate } from './nodemailer/templates';
 
 const tokenLifeTime = env.TOKEN_LIFETIME;
 const allowedOrigins = env.ALLOWED_ORIGINS?.split(',');
@@ -74,6 +74,7 @@ export const auth = betterAuth({
           url: data.url,
           message:
             'You requested to delete your account. Click the button below to confirm and continue.',
+          variant: 'destructive',
         });
 
         try {

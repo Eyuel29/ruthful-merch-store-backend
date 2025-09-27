@@ -3,6 +3,7 @@ import type { user } from '@/db/schema';
 import env from '@/env';
 
 type User = typeof user.$inferInsert;
+type EmailVariant = 'default' | 'destructive';
 
 const style = `
     body {
@@ -98,14 +99,19 @@ export function generateEmailTemplate({
   url,
   title,
   message,
+  variant = 'default',
 }: {
   user: User;
   url: string;
   title: string;
   message: string;
+  variant?: EmailVariant;
 }) {
   const minutes = Math.ceil(env.TOKEN_LIFETIME / (1000 * 60));
   const tokenLifetime = `${minutes} minute${minutes > 1 ? 's' : ''}`;
+
+  const buttonClass
+    = variant === 'destructive' ? 'confirm-button confirm-button-destructive' : 'confirm-button';
 
   return `
     <!doctype html>
@@ -129,7 +135,7 @@ export function generateEmailTemplate({
                 
                 The link is valid for ${tokenLifetime}.
             </p>
-            <a class="confirm-button" target="_blank" href="${url}">Confirm</a>
+            <a class="${buttonClass}" target="_blank" href="${url}">Confirm</a>
             <p>If you did not request this, you can safely ignore this email.</p>
             <hr />
             <div class="footer">

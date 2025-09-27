@@ -21,6 +21,7 @@ const envSchema = z
     ALLOWED_ORIGINS: z.string(),
     DATABASE_AUTH_TOKEN: z.string().optional(),
     DATABASE_URL: z.url(),
+    RESEND_TOKEN: z.string(),
     EMAIL_ADDRESS: z.email(),
     SENDER_ADDRESS: z.email(),
     EMAIL_PASS: z.string(),
