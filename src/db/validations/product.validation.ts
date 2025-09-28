@@ -1,10 +1,10 @@
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import z from 'zod';
 
-import { product, productAttributeValue, productImage, productModel } from '../schema';
+import { productVariant, productAttributeValue, productImage, productModel } from '../schema';
 import { paginationSchema } from './app.validation';
 
-export const selectProductSchema = createSelectSchema(product).extend({
+export const selectProductSchema = createSelectSchema(productVariant).extend({
   images: z.array(createSelectSchema(productImage)).optional(),
   models: z.array(createSelectSchema(productModel)).optional(),
   attributes: z.array(createSelectSchema(productAttributeValue)).optional(),
@@ -16,7 +16,7 @@ export const paginatedProductSchema = z.object({
   products: z.array(selectProductSchema),
 });
 
-const baseInsertProductSchema = createInsertSchema(product).omit({
+const baseInsertProductSchema = createInsertSchema(productVariant).omit({
   id: true,
   createdAt: true,
   updatedAt: true,

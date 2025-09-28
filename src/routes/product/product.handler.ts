@@ -5,7 +5,7 @@ import { count, eq } from 'drizzle-orm';
 import * as HttpStatusCodes from 'stoker/http-status-codes';
 
 import { db } from '@/db';
-import { product, productAttributeValue, productImage, productModel } from '@/db/schema';
+import { productVariant, productAttributeValue, productImage, productModel } from '@/db/schema';
 
 import type {
   CreateProductRoute,
@@ -27,7 +27,7 @@ export const create: RouteHandler<CreateProductRoute> = async (c) => {
 
   const result = await db.transaction(async (tx) => {
     const [newProduct] = await tx
-      .insert(product)
+      .insert(productVariant)
       .values({ ...productInput })
       .returning();
 
@@ -64,7 +64,7 @@ export const create: RouteHandler<CreateProductRoute> = async (c) => {
         productModel: true,
         productAttributeValue: true,
       },
-      where: eq(product.id, newProduct!.id),
+      where: eq(productVariant.id, newProduct!.id),
     });
   });
 
@@ -77,7 +77,7 @@ export const list: RouteHandler<ListProductsRoute> = async (c) => {
   const offset = (page - 1) * limit;
 
   const result = await db.transaction(async (tx) => {
-    const [productCount] = await tx.select({ total: count(product.id) }).from(product);
+    const [productCount] = await tx.select({ total: count(productVariant.id) }).from(productVariant);
 
     if (!productCount) {
       return {
@@ -122,7 +122,7 @@ export const get: RouteHandler<GetProductRoute> = async (c) => {
       productModel: true,
       productAttributeValue: true,
     },
-    where: eq(product.id, id),
+    where: eq(productVariant.id, id),
   });
 
   if (!prod) {
@@ -142,7 +142,7 @@ export const patch: RouteHandler<PatchProductRoute> = async (c) => {
 
   const updated = await db.transaction(async (tx) => {
     const [prod] = await tx
-      .update(product)
+      .update(productVariant)
       .set({
         name: updates.name,
         description: updates.description,
@@ -151,7 +151,7 @@ export const patch: RouteHandler<PatchProductRoute> = async (c) => {
         isAvailable: updates.isAvailable,
         categoryId: updates.categoryId,
       })
-      .where(eq(product.id, id))
+      .where(eq(productVariant.id, id))
       .returning();
 
     if (!prod)
@@ -249,7 +249,7 @@ export const patch: RouteHandler<PatchProductRoute> = async (c) => {
         productModel: true,
         productAttributeValue: true,
       },
-      where: eq(product.id, id),
+      where: eq(productVariant.id, id),
     });
   });
 
@@ -263,7 +263,7 @@ export const patch: RouteHandler<PatchProductRoute> = async (c) => {
 export const remove: RouteHandler<RemoveProductRoute> = async (c) => {
   const id = c.req.param('id');
 
-  const deleted = await db.delete(product).where(eq(product.id, id)).returning();
+  const deleted = await db.delete(productVariant).where(eq(productVariant.id, id)).returning();
 
   if (!deleted.length) {
     return c.json({ message: 'Product not found' }, HttpStatusCodes.NOT_FOUND);

@@ -6,7 +6,7 @@ import {
   order,
   orderItem,
   payment,
-  product,
+  productVariant,
   productAttributeValue,
   productCategory,
   productCategoryAttribute,
@@ -37,7 +37,7 @@ export const accountRelations = relations(account, ({ one }) => ({
 }));
 
 export const productCategoryRelations = relations(productCategory, ({ many }) => ({
-  products: many(product),
+  products: many(productVariant),
   attributes: many(productCategoryAttribute),
 }));
 
@@ -49,9 +49,9 @@ export const productCategoryAttributeRelations = relations(productCategoryAttrib
   attributeValues: many(productAttributeValue),
 }));
 
-export const productRelations = relations(product, ({ many, one }) => ({
+export const productRelations = relations(productVariant, ({ many, one }) => ({
   category: one(productCategory, {
-    fields: [product.categoryId],
+    fields: [productVariant.categoryId],
     references: [productCategory.id],
   }),
   images: many(productImage),
@@ -63,9 +63,9 @@ export const productRelations = relations(product, ({ many, one }) => ({
 }));
 
 export const productAttributeValueRelations = relations(productAttributeValue, ({ one }) => ({
-  product: one(product, {
+  product: one(productVariant, {
     fields: [productAttributeValue.productId],
-    references: [product.id],
+    references: [productVariant.id],
   }),
   attribute: one(productCategoryAttribute, {
     fields: [productAttributeValue.attributeId],
@@ -74,23 +74,23 @@ export const productAttributeValueRelations = relations(productAttributeValue, (
 }));
 
 export const productImageRelations = relations(productImage, ({ one }) => ({
-  product: one(product, {
+  product: one(productVariant, {
     fields: [productImage.productId],
-    references: [product.id],
+    references: [productVariant.id],
   }),
 }));
 
 export const productModelRelations = relations(productModel, ({ one }) => ({
-  product: one(product, {
+  product: one(productVariant, {
     fields: [productModel.productId],
-    references: [product.id],
+    references: [productVariant.id],
   }),
 }));
 
 export const discountRelations = relations(discount, ({ one }) => ({
-  product: one(product, {
+  product: one(productVariant, {
     fields: [discount.productId],
-    references: [product.id],
+    references: [productVariant.id],
   }),
 }));
 
@@ -108,9 +108,9 @@ export const orderItemRelations = relations(orderItem, ({ one }) => ({
     fields: [orderItem.orderId],
     references: [order.id],
   }),
-  product: one(product, {
+  product: one(productVariant, {
     fields: [orderItem.productId],
-    references: [product.id],
+    references: [productVariant.id],
   }),
 }));
 
@@ -130,8 +130,8 @@ export const reviewRelations = relations(review, ({ one }) => ({
     fields: [review.userId],
     references: [user.id],
   }),
-  product: one(product, {
+  product: one(productVariant, {
     fields: [review.productId],
-    references: [product.id],
+    references: [productVariant.id],
   }),
 }));
