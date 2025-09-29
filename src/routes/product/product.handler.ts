@@ -133,9 +133,6 @@ export const get: RouteHandler<GetProductRoute> = async (c) => {
 };
 
 export const patch: RouteHandler<PatchProductRoute> = async (c) => {
-  
-  // TODO
-
   const id = c.req.param('id');
   const updates = c.req.valid('json');
 
