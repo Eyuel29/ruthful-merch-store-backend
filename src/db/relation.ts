@@ -89,7 +89,7 @@ export const productModelRelations = relations(productModel, ({ one }) => ({
 }));
 
 export const discountRelations = relations(discount, ({ many }) => ({
-  products: many(discountProduct),
+  discountProducts: many(discountProduct),
 }));
 
 export const discountProductRelations = relations(discountProduct, ({ one }) => ({
