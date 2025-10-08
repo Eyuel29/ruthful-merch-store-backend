@@ -59,7 +59,7 @@ export const get = createRoute({
   path: '/{id}',
   method: 'get',
   request: { params: idParamsSchema },
-  middleware: [verifyAuth(['admin', 'manager'])],
+  middleware: [verifyAuth()],
   tags,
   responses: {
     [HttpStatusCodes.OK]: jsonContent(selectProductCategorySchema, 'The product category object.'),
